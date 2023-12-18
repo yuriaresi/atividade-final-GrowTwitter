@@ -13,11 +13,11 @@ datasource db {
 model Usuario {
   id          String @id @default(uuid())
   nome        String @db.VarChar(60)
-  nomeUsuario String @db.VarChar(50) @map("nome_usuario")
+  nomeUsuario String @map("nome_usuario") @db.VarChar(50)
   email       String @unique @db.VarChar(60)
   senha       String @db.VarChar(100)
 
-  dtHrCriacao DateTime @default(now()) @map("Dt_hr_criacao")
+  dtHrCriacao     DateTime @default(now()) @map("Dt_hr_criacao")
   dtHrAtualizacao DateTime @updatedAt @map("dt_hr_atualizacao")
 
   @@map("usuario")
@@ -25,12 +25,22 @@ model Usuario {
 
 model Tweet {
   id        String @id @default(uuid())
-  usuarioId String @db.VarChar(100) @map("usuario_id") 
+  usuarioId String @map("usuario_id") @db.VarChar(100)
   conteudo  String @db.Text
-  tipoTweet String  @db.Char(1) @map("tipo_tweet")
+  tipoTweet String @map("tipo_tweet") @db.Char(1)
 
-  dtHrCriacao DateTime @default(now()) @map("dt_hr_criacao")
+  dtHrCriacao     DateTime @default(now()) @map("dt_hr_criacao")
   dtHrAtualizacao DateTime @updatedAt @map("dt_hr_atualizacao")
 
   @@map("tweet")
+}
+
+model Like {
+  id              String   @id @default(uuid())
+  usuarioId       String   @map("usuario_id") @db.VarChar(100)
+  tweetId         String   @map("tweet_id") @db.VarChar(100)
+  dtHrCriacao     DateTime @default(now()) @map("dt_hr_criacao")
+  dtHrAtualizacao DateTime @updatedAt @map("dt_hr_atualizacao")
+
+  @@map("like")
 }
