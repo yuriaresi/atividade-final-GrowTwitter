@@ -13,9 +13,24 @@ datasource db {
 model Usuario {
   id          String @id @default(uuid())
   nome        String @db.VarChar(60)
-  nomeUsuario String @map("nome_usuario") @db.VarChar(50)
+  nomeUsuario String @db.VarChar(50) @map("nome_usuario")
   email       String @unique @db.VarChar(60)
   senha       String @db.VarChar(100)
 
+  dtHrCriacao DateTime @default(now()) @map("Dt_hr_criacao")
+  dtHrAtualizacao DateTime @updatedAt @map("dt_hr_atualizacao")
+
   @@map("usuario")
+}
+
+model Tweet {
+  id        String @id @default(uuid())
+  usuarioId String @db.VarChar(100) @map("usuario_id") 
+  conteudo  String @db.Text
+  tipoTweet String  @db.Char(1) @map("tipo_tweet")
+
+  dtHrCriacao DateTime @default(now()) @map("dt_hr_criacao")
+  dtHrAtualizacao DateTime @updatedAt @map("dt_hr_atualizacao")
+
+  @@map("tweet")
 }
