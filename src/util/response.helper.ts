@@ -18,3 +18,11 @@ export function erroCampoNaoInformado(res: Response) {
         }
     )
 }
+
+export function erroNaoEncontrado(res: Response, entidade: string) {
+
+    return res.status(404).send({
+        ok: false,
+        message: `${entidade} não encontrado`
+    })
+}

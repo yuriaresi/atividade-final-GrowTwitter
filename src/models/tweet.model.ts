@@ -1,14 +1,16 @@
+
 import { randomUUID } from "crypto";
+import { Usuario } from "./usuario.model";
 
 export class Tweet {
     id: string;
-    usuarioId: string;
+
     conteudo: string;
     tipoTweet: string;
 
-    constructor(usuarioId: string, conteudo: string, tipoTweet: string) {
+    constructor(public usuarioId: Usuario, conteudo: string, tipoTweet: string) {
         this.id = randomUUID()
-        this.usuarioId = usuarioId
+
         this.conteudo = conteudo
         this.tipoTweet = tipoTweet
     }

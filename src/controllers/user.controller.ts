@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import repository from "../database/prisma.ripository";
-import { erroCampoNaoInformado, errorServidor } from "../util/response.helper";
+import { erroNaoEncontrado, errorServidor } from "../util/response.helper";
+import { Usuario } from "../models/usuario.model";
 
 export class UsuarioController {
 
@@ -48,12 +49,13 @@ export class UsuarioController {
 
             const usuario = await repository.usuario.findUnique(
                 {
-                    where: { id }
+                    where: { id },
+                    include: { tweets: true }
                 }
             )
 
             if (!usuario) {
-                return { message: 'Usuario nao encontrado' }
+                return erroNaoEncontrado(res, 'Usuario')
             }
 
             //-3 saida
@@ -68,6 +70,20 @@ export class UsuarioController {
             errorServidor(res, error)
 
         }
+    }
+
+    public async listarUsuarios(req: Request, res: Response) {
+
+        const result = await repository.usuario.findMany()
+
+        if (Usuario.length === 0) {
+            return erroNaoEncontrado(res, 'Usuario')
+        }
+
+        return res.status(201).send({
+            ok: true,
+            data: result
+        })
     }
 
 
