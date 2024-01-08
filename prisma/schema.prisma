@@ -11,11 +11,13 @@ datasource db {
 }
 
 model Usuario {
-  id          String @id @default(uuid())
+  id          String @id @default(uuid()) @db.Uuid
   nome        String @db.VarChar(60)
   nomeUsuario String @map("nome_usuario") @db.VarChar(50)
   email       String @unique @db.VarChar(60)
   senha       String @db.VarChar(100)
+
+  tweets Tweet[]
 
   dtHrCriacao     DateTime @default(now()) @map("Dt_hr_criacao")
   dtHrAtualizacao DateTime @updatedAt @map("dt_hr_atualizacao")
@@ -24,10 +26,14 @@ model Usuario {
 }
 
 model Tweet {
-  id        String @id @default(uuid())
-  usuarioId String @map("usuario_id") @db.VarChar(100)
+  id        String @id @default(uuid()) @db.Uuid
+  idUsuario String @map("id_usuario") @db.Uuid
   conteudo  String @db.Text
   tipoTweet String @map("tipo_tweet") @db.Char(1)
+
+  usuarioId Usuario @relation(fields: [idUsuario], references: [id])
+
+  like Like?
 
   dtHrCriacao     DateTime @default(now()) @map("dt_hr_criacao")
   dtHrAtualizacao DateTime @updatedAt @map("dt_hr_atualizacao")
@@ -36,9 +42,11 @@ model Tweet {
 }
 
 model Like {
-  id              String   @id @default(uuid())
-  usuarioId       String   @map("usuario_id") @db.VarChar(100)
-  tweetId         String   @map("tweet_id") @db.VarChar(100)
+  idUsuario String @map("id_usuario") @db.Uuid
+  idTweet   String @id @default(uuid()) @db.Uuid
+
+  tweet Tweet @relation(fields: [idTweet], references: [id])
+
   dtHrCriacao     DateTime @default(now()) @map("dt_hr_criacao")
   dtHrAtualizacao DateTime @updatedAt @map("dt_hr_atualizacao")
 
