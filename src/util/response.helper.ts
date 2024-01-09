@@ -1,5 +1,5 @@
 
-import { Response, } from "express";
+import { Response } from "express";
 
 export function errorServidor(res: Response, error: any) {
     return res.status(500).send({

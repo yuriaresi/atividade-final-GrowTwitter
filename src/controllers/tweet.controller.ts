@@ -11,9 +11,19 @@ export class TweetController {
             //-1 entrada
             const { id } = req.params
             const { conteudo, tipoTweet } = req.body
+            const {authorization} = req.headers
 
             if (!conteudo || !tipoTweet) {
                 return erroCampoNaoInformado(res)
+            }
+
+            if(!authorization){
+                res.status(400).send(
+                    {
+                        ok:false,
+                        message: 'Token de autenticação não informado.'
+                    }
+                )
             }
 
             //-2 processamento
@@ -24,6 +34,15 @@ export class TweetController {
 
             if (!usuario) {
                 return erroNaoEncontrado(res, 'Usuario')
+            }
+
+            if(usuario.token !== authorization ){
+                res.status(401).send(
+                    {
+                        ok:false,
+                        message: 'Token invalido'
+                    }
+                )
             }
 
 

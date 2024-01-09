@@ -1,7 +1,8 @@
-import express, { Request, Response, request } from "express";
+import express from "express";
 import cors from 'cors';
 import { UsuarioController } from "./controllers/user.controller";
 import { TweetController } from "./controllers/tweet.controller";
+import { AuthController } from "./controllers/auth.controller";
 
 const app = express();
 app.use(express.json());
@@ -9,6 +10,10 @@ app.use(cors());
 
 const usuarioController = new UsuarioController()
 const tweetController = new TweetController()
+const authcontroller = new AuthController()
+
+
+
 
 //usuario
 
@@ -21,6 +26,10 @@ app.get('/usuario', usuarioController.listarUsuarios)
 // tweet
 
 app.post('/usuario/:id/tweet', tweetController.criarTweet)
+
+//login
+
+app.post('/login', authcontroller.login)
 
 
 

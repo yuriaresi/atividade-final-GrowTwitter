@@ -22,8 +22,9 @@ export class UsuarioController {
                 })
             }
 
+            const usuario = new Usuario(nome, nomeUsuario, email, senha)
             await repository.usuario.create({
-                data: { nome, nomeUsuario, email, senha }
+                data: usuario
             })
 
             //-3 saida

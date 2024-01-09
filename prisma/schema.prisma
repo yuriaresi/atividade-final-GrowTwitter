@@ -17,6 +17,8 @@ model Usuario {
   email       String @unique @db.VarChar(60)
   senha       String @db.VarChar(100)
 
+  token String?
+
   tweets Tweet[]
 
   dtHrCriacao     DateTime @default(now()) @map("Dt_hr_criacao")

@@ -5,7 +5,7 @@ export class Usuario {
     public nome: string;
     public nomeUsuario: string;
     public email: string;
-    private senha: string;
+    public senha: string;
 
     constructor(nome: string, nomeUsuario: string, email: string, senha: string) {
         this.id = randomUUID()
