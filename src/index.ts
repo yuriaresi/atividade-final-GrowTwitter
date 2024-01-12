@@ -37,6 +37,8 @@ app.delete('/tweet/:id', tweetController.deletarTweets)
 
 app.put('/tweet/:id', tweetController.editarTweets)
 
+app.get('/tweet/:id', tweetController.buscarTweetId)
+
 //login
 
 app.post('/login', authcontroller.login)

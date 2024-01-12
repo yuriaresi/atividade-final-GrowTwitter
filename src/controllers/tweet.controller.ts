@@ -151,4 +151,20 @@ export class TweetController {
 
         }
     }
+
+    public async buscarTweetId(req: Request, res: Response) {
+        try {
+            const { id } = req.params
+
+            const result = await repository.tweet.findUnique({ where: { id } })
+
+            if (!result) { return res.status(404).send(erroNaoEncontrado(res, 'Tweet')) }
+
+            return res.status(201).send({ ok: true, message: result })
+
+        } catch (error: any) {
+            errorServidor(res, error)
+
+        }
+    }
 }
