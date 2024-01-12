@@ -23,9 +23,19 @@ app.get('/usuario/:id', usuarioController.buscarUsuario)
 
 app.get('/usuario', usuarioController.listarUsuarios)
 
+app.delete('/usuario/:id', usuarioController.deletarUsuario)
+
+app.put('/usuario/:id', usuarioController.editarUsuario)
+
 // tweet
 
 app.post('/usuario/:id/tweet', tweetController.criarTweet)
+
+app.get('/tweets', tweetController.listarTweets)
+
+app.delete('/tweet/:id', tweetController.deletarTweets)
+
+app.put('/tweet/:id', tweetController.editarTweets)
 
 //login
 

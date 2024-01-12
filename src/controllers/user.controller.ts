@@ -87,7 +87,69 @@ export class UsuarioController {
         })
     }
 
+    public async deletarUsuario(req: Request, res: Response) {
+        try {
 
+            const { id } = req.params
+
+            const result = await repository.usuario.findUnique({ where: { id } })
+
+            if (!result) { return (res.status(404).send({ ok: false, message: erroNaoEncontrado(res, 'usuario') })) }
+
+            await repository.usuario.delete({ where: { id } })
+
+            return res.status(201).send({ ok: true, message: 'Usuario deletado com sucesso.' })
+        }
+
+
+
+        catch (error: any) {
+            errorServidor(res, error)
+
+        }
+    }
+
+    public async editarUsuario(req: Request, res: Response) {
+        try {
+            const { id } = req.params
+            const { nome, nomeUsuario } = req.body
+
+            if (!nome && !nomeUsuario) {
+                return res.status(400).send(
+                    {
+                        ok: false,
+                        message: 'Informe ao menos um campo para atualizar'
+                    }
+                )
+            };
+
+            const usuario = await repository.usuario.findUnique({ where: { id } })
+
+            if (!usuario) {
+                return (res.status(404).send({ ok: false, message: erroNaoEncontrado(res, 'usuario') }))
+            }
+
+            const result = await repository.usuario.update({
+                where: { id },
+                data: { nome, nomeUsuario }
+            })
+
+            return res.status(201).send({
+                ok: true,
+                message: 'Usuario atualizado com sucesso',
+                data: result
+            })
+
+
+
+        }
+
+        catch (error: any) {
+            errorServidor(res, error)
+
+        }
+    }
 
 
 }
+

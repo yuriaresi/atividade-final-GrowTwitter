@@ -11,16 +11,16 @@ export class TweetController {
             //-1 entrada
             const { id } = req.params
             const { conteudo, tipoTweet } = req.body
-            const {authorization} = req.headers
+            const { authorization } = req.headers
 
             if (!conteudo || !tipoTweet) {
                 return erroCampoNaoInformado(res)
             }
 
-            if(!authorization){
+            if (!authorization) {
                 res.status(400).send(
                     {
-                        ok:false,
+                        ok: false,
                         message: 'Token de autenticação não informado.'
                     }
                 )
@@ -36,10 +36,10 @@ export class TweetController {
                 return erroNaoEncontrado(res, 'Usuario')
             }
 
-            if(usuario.token !== authorization ){
+            if (usuario.token !== authorization) {
                 res.status(401).send(
                     {
-                        ok:false,
+                        ok: false,
                         message: 'Token invalido'
                     }
                 )
@@ -67,6 +67,88 @@ export class TweetController {
 
         } catch (error) {
             errorServidor(res, error)
+        }
+    }
+
+    public async listarTweets(req: Request, res: Response) {
+        try {
+            const result = await repository.tweet.findMany()
+
+            if (result.length === 0) {
+                return erroNaoEncontrado(res, 'Usuario')
+            }
+            return res.status(201).send({
+                ok: true,
+                data: result
+            })
+
+
+        } catch (error: any) {
+            return res.status(500).send(
+                {
+                    ok: false,
+                    message: error.toString()
+                }
+            )
+        }
+    }
+
+
+    public async deletarTweets(req: Request, res: Response) {
+        try {
+            const { id } = req.params
+
+            const result = await repository.tweet.findUnique(
+                { where: { id } }
+            )
+
+            if (!result) {
+                return res.status(404).send({
+                    ok: false,
+                    message: 'Tweet não encontrado'
+                })
+            }
+
+            await repository.tweet.delete({ where: { id } })
+
+            return res.status(201).send({ ok: true, message: 'Tweet deletado com sucesso.' })
+
+        } catch (error: any) {
+            return res.status(500).send(
+                {
+                    ok: false,
+                    message: error.toString()
+                }
+            )
+        }
+    }
+
+    public async editarTweets(req: Request, res: Response) {
+        try {
+
+            const { id } = req.params
+            const { conteudo } = req.body
+
+            if (!conteudo) {
+                return res.status(400).send(
+                    {
+                        ok: false,
+                        message: 'Preencha o campo'
+                    }
+                )
+            };
+
+            const tweet = await repository.tweet.findUnique({ where: { id } })
+
+            if (!tweet) { return res.status(404).send({ ok: false, message: erroNaoEncontrado(res, 'Tweet') }) }
+
+            const result = await repository.tweet.update({ where: { id }, data: { conteudo } })
+
+            return res.status(201).send({ ok: true, message: 'Tweet atualizado com sucesso.' })
+
+        } catch (error: any) {
+            errorServidor(res, error)
+
         }
     }
 }
