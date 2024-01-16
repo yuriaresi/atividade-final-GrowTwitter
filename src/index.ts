@@ -51,9 +51,11 @@ app.post('/login', authcontroller.login)
 
 app.post('/seguir/:id', seguindoController.seguir)
 
+// tem a mesma funcionalidade que a rota buscar usuarios.
+
 app.get('/seguidores/:id', seguindoController.mostrarSeguidores)
 
-
+//
 
 app.listen(3333, () => {
     console.log("A API está rodando!- http://localhost:3333");
