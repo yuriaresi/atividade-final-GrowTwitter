@@ -3,6 +3,7 @@ import cors from 'cors';
 import { UsuarioController } from "./controllers/user.controller";
 import { TweetController } from "./controllers/tweet.controller";
 import { AuthController } from "./controllers/auth.controller";
+import { SeguindoController } from "./controllers/seguindo.controller";
 
 const app = express();
 app.use(express.json());
@@ -11,6 +12,7 @@ app.use(cors());
 const usuarioController = new UsuarioController()
 const tweetController = new TweetController()
 const authcontroller = new AuthController()
+const seguindoController = new SeguindoController()
 
 
 
@@ -42,6 +44,14 @@ app.get('/tweet/:id', tweetController.buscarTweetId)
 //login
 
 app.post('/login', authcontroller.login)
+
+
+
+// seguir
+
+app.post('/seguir/:id', seguindoController.seguir)
+
+app.get('/seguidores/:id', seguindoController.mostrarSeguidores)
 
 
 

@@ -51,7 +51,7 @@ export class UsuarioController {
             const usuario = await repository.usuario.findUnique(
                 {
                     where: { id },
-                    include: { tweets: true }
+                    include: { tweets: true, seguindo: true, seguidores:true }
                 }
             )
 

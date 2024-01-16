@@ -19,7 +19,9 @@ model Usuario {
 
   token String?
 
-  tweets Tweet[]
+  tweets     Tweet[]
+  seguindo   Seguindo[] @relation("seguindo")
+  seguidores Seguindo[] @relation("seguidores")
 
   dtHrCriacao     DateTime @default(now()) @map("Dt_hr_criacao")
   dtHrAtualizacao DateTime @updatedAt @map("dt_hr_atualizacao")
@@ -53,4 +55,17 @@ model Like {
   dtHrAtualizacao DateTime @updatedAt @map("dt_hr_atualizacao")
 
   @@map("like")
+}
+
+model Seguindo {
+  id           String @id @default(uuid()) @db.Uuid
+  idSeguindo   String @map("id_seguindo") @db.Uuid
+  idUsuario    String @map("id_usuario") @db.Uuid
+  nickUsuario  String @default("default_value") @map("nick_usuario") @db.VarChar(50)
+  nickSeguindo String @default("default_value") @map("nick_seguindo") @db.VarChar(50)
+
+  usuario  Usuario @relation("seguindo", fields: [idUsuario], references: [id])
+  seguindo Usuario @relation("seguidores", fields: [idSeguindo], references: [id])
+
+  @@map("seguindo")
 }
