@@ -4,6 +4,7 @@ import { UsuarioController } from "./controllers/user.controller";
 import { TweetController } from "./controllers/tweet.controller";
 import { AuthController } from "./controllers/auth.controller";
 import { SeguindoController } from "./controllers/seguindo.controller";
+import { validaLogMiddlewares } from "./middlewares/login.middlewares";
 
 const app = express();
 app.use(express.json());
@@ -25,13 +26,13 @@ app.get('/usuario/:id', usuarioController.buscarUsuario)
 
 app.get('/usuario', usuarioController.listarUsuarios)
 
-app.delete('/usuario/:id', usuarioController.deletarUsuario)
+app.delete('/usuario/:id', [validaLogMiddlewares], usuarioController.deletarUsuario)
 
 app.put('/usuario/:id', usuarioController.editarUsuario)
 
 // tweet
 
-app.post('/usuario/:id/tweet', tweetController.criarTweet)
+app.post('/usuario/:id/tweet', [validaLogMiddlewares], tweetController.criarTweet)
 
 app.get('/tweets', tweetController.listarTweets)
 
@@ -49,7 +50,7 @@ app.post('/login', authcontroller.login)
 
 // seguir
 
-app.post('/seguir/:id', seguindoController.seguir)
+app.post('/seguir/:id',  seguindoController.seguir)
 
 // tem a mesma funcionalidade que a rota buscar usuarios.
 
