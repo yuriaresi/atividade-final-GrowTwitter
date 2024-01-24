@@ -176,16 +176,12 @@ export class TweetController {
         try {
             const { id } = req.params
 
-            const result = await repository.usuario.findUnique({ where: { id }, include: { tweets: true } })
-            if (!result) {
-                return (
-                    { ok: false, message: erroNaoEncontrado(res, 'usuario') }
-                )
-            }
+            const result = await repository.tweet.findMany({ where: { idUsuario: id }, include: { usuarioId: true } })
+            
 
             return (res.status(201).send({
                 ok: true,
-                data: result.tweets
+                data: result
             }))
 
 
