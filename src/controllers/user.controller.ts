@@ -51,7 +51,7 @@ export class UsuarioController {
             const usuario = await repository.usuario.findUnique(
                 {
                     where: { id },
-                    include: { tweets: true, seguindo: true, seguidores:true }
+                    include: { tweets: true, seguindo: true, seguidores: true }
                 }
             )
 
@@ -75,16 +75,22 @@ export class UsuarioController {
 
     public async listarUsuarios(req: Request, res: Response) {
 
-        const result = await repository.usuario.findMany()
+        try {
+            const result = await repository.usuario.findMany()
 
-        if (Usuario.length === 0) {
-            return erroNaoEncontrado(res, 'Usuario')
+            if (Usuario.length === 0) {
+                return erroNaoEncontrado(res, 'Usuario')
+            }
+
+            return res.status(201).send({
+                ok: true,
+                data: result
+            })
+
+        } catch (error: any) {
+            errorServidor(error, res)
+
         }
-
-        return res.status(201).send({
-            ok: true,
-            data: result
-        })
     }
 
     public async deletarUsuario(req: Request, res: Response) {

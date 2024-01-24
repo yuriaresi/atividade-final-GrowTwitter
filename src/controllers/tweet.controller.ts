@@ -10,10 +10,10 @@ export class TweetController {
         try {
             //-1 entrada
             const { id } = req.params
-            const { conteudo, tipoTweet } = req.body
+            const { conteudo } = req.body
             const { authorization } = req.headers
 
-            if (!conteudo || !tipoTweet) {
+            if (!conteudo) {
                 return erroCampoNaoInformado(res)
             }
 
@@ -48,7 +48,7 @@ export class TweetController {
 
             const usuarioBackend = adaptUsuarioPrisma(usuario)
 
-            const tweet = new Tweet(usuarioBackend, conteudo, tipoTweet)
+            const tweet = new Tweet(usuarioBackend, conteudo, "T")
 
             const result = await repository.tweet.create({
                 data: {
@@ -72,10 +72,14 @@ export class TweetController {
 
     public async listarTweets(req: Request, res: Response) {
         try {
-            const result = await repository.tweet.findMany()
-
+            const result = await repository.tweet.findMany(
+                {
+                    include: { usuarioId: true }
+                }
+            )
+            console.log(result)
             if (result.length === 0) {
-                return erroNaoEncontrado(res, 'Usuario')
+                return { ok: false, data: [] }
             }
             return res.status(201).send({
                 ok: true,
@@ -164,6 +168,31 @@ export class TweetController {
 
         } catch (error: any) {
             errorServidor(res, error)
+
+        }
+    }
+
+    public async buscarTweetUsuario(req: Request, res: Response) {
+        try {
+            const { id } = req.params
+
+            const result = await repository.usuario.findUnique({ where: { id }, include: { tweets: true } })
+            if (!result) {
+                return (
+                    { ok: false, message: erroNaoEncontrado(res, 'usuario') }
+                )
+            }
+
+            return (res.status(201).send({
+                ok: true,
+                data: result.tweets
+            }))
+
+
+
+
+        } catch (error: any) {
+            errorServidor(error, res)
 
         }
     }

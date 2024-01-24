@@ -3,6 +3,7 @@ import { erroCampoNaoInformado, errorServidor } from "../util/response.helper";
 import repository from "../database/prisma.ripository";
 import { randomUUID } from "crypto";
 import { Request, Response } from "express";
+import { Usuario } from "../models/usuario.model";
 
 export class AuthController {
     public async login(req: Request, res: Response) {
@@ -21,7 +22,7 @@ export class AuthController {
             //-2 processamento
             const usuario = await repository.usuario.findFirst({
                 where: { email, senha },
-                select: { id: true, nome: true }
+                select: { id: true, nome: true, image: true, nomeUsuario: true }
             })
 
             if (!usuario) {
@@ -51,7 +52,9 @@ export class AuthController {
                 data: {
                     id: usuario.id,
                     nome: usuario.nome,
-                    token
+                    token,
+                    image: usuario.image,
+                    nomeUsuario: usuario.nomeUsuario
                 }
             })
 

@@ -21,26 +21,19 @@ const seguindoController = new SeguindoController()
 //usuario
 
 app.post('/usuario', usuarioController.criarUsuario)
-
 app.get('/usuario/:id', usuarioController.buscarUsuario)
-
 app.get('/usuario', usuarioController.listarUsuarios)
-
 app.delete('/usuario/:id', [validaLogMiddlewares], usuarioController.deletarUsuario)
-
 app.put('/usuario/:id', usuarioController.editarUsuario)
 
 // tweet
 
 app.post('/usuario/:id/tweet', [validaLogMiddlewares], tweetController.criarTweet)
-
 app.get('/tweets', tweetController.listarTweets)
-
 app.delete('/tweet/:id', tweetController.deletarTweets)
-
 app.put('/tweet/:id', tweetController.editarTweets)
-
 app.get('/tweet/:id', tweetController.buscarTweetId)
+app.get('/usuario/:id/tweet', [validaLogMiddlewares], tweetController.buscarTweetUsuario)
 
 //login
 
@@ -50,7 +43,7 @@ app.post('/login', authcontroller.login)
 
 // seguir
 
-app.post('/seguir/:id',  seguindoController.seguir)
+app.post('/seguir/:id', seguindoController.seguir)
 
 // tem a mesma funcionalidade que a rota buscar usuarios.
 

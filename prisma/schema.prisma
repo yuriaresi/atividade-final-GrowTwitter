@@ -16,6 +16,7 @@ model Usuario {
   nomeUsuario String @map("nome_usuario") @db.VarChar(50)
   email       String @unique @db.VarChar(60)
   senha       String @db.VarChar(100)
+  image       String @default("default_value") @db.Text 
 
   token String?
 
