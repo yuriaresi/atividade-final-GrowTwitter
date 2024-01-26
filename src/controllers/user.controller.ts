@@ -118,7 +118,7 @@ export class UsuarioController {
     public async editarUsuario(req: Request, res: Response) {
         try {
             const { id } = req.params
-            const { nome, nomeUsuario } = req.body
+            const { nome, nomeUsuario, image } = req.body
 
             if (!nome && !nomeUsuario) {
                 return res.status(400).send(
@@ -135,15 +135,18 @@ export class UsuarioController {
                 return (res.status(404).send({ ok: false, message: erroNaoEncontrado(res, 'usuario') }))
             }
 
+            let usuarioAtualizado = { nome, nomeUsuario }
+
+            
+
             const result = await repository.usuario.update({
                 where: { id },
-                data: { nome, nomeUsuario }
+                data: { nome, nomeUsuario, image }
             })
 
             return res.status(201).send({
                 ok: true,
                 message: 'Usuario atualizado com sucesso',
-                data: result
             })
 
 
@@ -156,6 +159,34 @@ export class UsuarioController {
         }
     }
 
+    // public async alterarImagem(req: Request, res: Response) {
+    //     try {
+    //         const { id } = req.params
+    //         const { image } = req.body
+
+    //         const result = await repository.usuario.findUnique({ where: { id } })
+
+    //         if (!result) {
+    //             return (erroNaoEncontrado(res, 'usuario'))
+    //         }
+
+    //         const editImage = await repository.usuario.update({
+    //             where: { id },
+    //             data: { image }
+    //         })
+
+    //         return (
+    //             res.status(201).send({
+    //                 ok: true,
+    //                 message: 'Imagem alterada com sucesso'
+    //             })
+    //         )
+
+    //     } catch (erro: any) {
+    //         errorServidor(erro, res)
+
+    //     }
+    // }
 
 }
 
