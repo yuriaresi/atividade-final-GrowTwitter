@@ -33,7 +33,7 @@ app.post('/usuario/:id')
 
 app.post('/usuario/:id/tweet', [validaLogMiddlewares], tweetController.criarTweet)
 app.get('/tweets', tweetController.listarTweets)
-app.delete('/tweet/:id', [validaLogMiddlewares], tweetController.deletarTweets)
+app.delete('/tweet/:id', tweetController.deletarTweets)
 app.put('/tweet/:id', [validaLogMiddlewares], tweetController.editarTweets)
 app.get('/tweet/:id' , tweetController.buscarTweetId)
 app.get('/usuario/:id/tweet', [validaLogMiddlewares], tweetController.buscarTweetUsuario)
