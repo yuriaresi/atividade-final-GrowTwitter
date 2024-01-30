@@ -8,7 +8,7 @@ export class UsuarioController {
     public async criarUsuario(req: Request, res: Response) {
         try {
             //-1 entrada
-            const { nome, nomeUsuario, email, senha } = req.body
+            const { nome, nomeUsuario, email, senha, image } = req.body
 
 
 
@@ -22,7 +22,7 @@ export class UsuarioController {
                 })
             }
 
-            const usuario = new Usuario(nome, nomeUsuario, email, senha)
+            const usuario = new Usuario(nome, nomeUsuario, email, senha, image)
             await repository.usuario.create({
                 data: usuario
             })
